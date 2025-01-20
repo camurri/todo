@@ -92,37 +92,37 @@ class _TodoListPageState extends State<TodoListPage> {
             // Lista de tarefas.
             Expanded(
               child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: todos.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
+                shrinkWrap: true,// Permite que a lista ocupe todo o espaço disponível.
+                itemCount: todos.length,// Número de itens na lista.
+                itemBuilder: (context, index) {// Cria os itens da lista.
+                  return ListTile(// Item da lista.
                     title: Text(todos[index]),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () => removeTodoAt(index),
+                    trailing: IconButton(// Botão para remover a tarefa.
+                      icon: const Icon(Icons.delete),// Ícone do botão.
+                      onPressed: () => removeTodoAt(index),// Ação ao pressionar o botão.
                     ),
-                    leading: const Icon(Icons.check_box_outline_blank),
-                    onTap: () {
+                    leading: const Icon(Icons.check_box_outline_blank),//
+                    onTap: () {// Ação ao clicar no item.
                       print('Tarefa selecionada: ${todos[index]}');
-                    },
+                    },// Mensagem de depuração.
                   );
-                },
+                },// Lista de itens.
               ),
             ),
 
             const SizedBox(height: 16),
 
             // Mensagem e botão para remover todas as tarefas.
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    todos.isEmpty
-                        ? 'Nenhuma tarefa pendente'
+            Row(// Linha para os botões.
+              children: [// Botões.
+                Expanded(// Permite que o botão ocupe todo o espaço disponível.
+                  child: Text(// Mensagem de depuração.
+                    todos.isEmpty// Verifica se a lista está vazia.
+                        ? 'Nenhuma tarefa pendente'// Mensagem caso esteja vazia.
                         : 'Você possui ${todos.length} tarefas pendentes',
                   ),
                 ),
-                ElevatedButton(
+                ElevatedButton(// Botão para remover todas as tarefas.
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                     fixedSize: const Size(80, 50),
