@@ -1,133 +1,140 @@
 import 'package:flutter/material.dart';
 
-class TodoListPage extends StatelessWidget {
+/// Página de lista de tarefas (Todo List).
+/// Este widget permite ao usuário adicionar, visualizar e remover tarefas de uma lista interativa.
+class TodoListPage extends StatefulWidget {
+  /// Construtor padrão.
   TodoListPage({super.key});
 
+  @override
+  _TodoListPageState createState() => _TodoListPageState();
+}
+
+class _TodoListPageState extends State<TodoListPage> {
+  /// Controlador para o campo de texto onde as tarefas são adicionadas.
   final TextEditingController todoController = TextEditingController();
 
+  /// Lista que armazena as tarefas adicionadas pelo usuário.
+  List<String> todos = [];
 
-
-  void deleteAllTodo() {
-    //todoController.clear();
+  /// Adiciona uma nova tarefa à lista de tarefas.
+  ///
+  /// A tarefa será adicionada apenas se o campo de texto não estiver vazio.
+  void addTodo() {
+    String text = todoController.text;
+    if (text.isNotEmpty) {
+      setState(() { // Atualiza a interface do usuário.
+        todos.add(text); // Adiciona a tarefa à lista.
+      });
+      todoController.clear(); // Limpa o campo de texto após a adição.
+    }
   }
 
-  List<String> todos = [];
+  /// Remove todas as tarefas da lista.
+  void deleteAllTodo() {
+    setState(() { // Atualiza a interface do usuário.
+      todos.clear(); // Remove todas as tarefas da lista.
+    });
+  }
+
+  /// Remove a tarefa no índice especificado.
+  ///
+  /// [index] Índice da tarefa a ser removida.
+  void removeTodoAt(int index) {
+    setState(() { // Atualiza a interface do usuário.
+      todos.removeAt(index);// Remove a tarefa da lista.
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Lista de Tarefas',
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              ),
+    return Scaffold(// Tela principal.
+      body: Padding(// Conteúdo da tela.
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Título principal da página.
+            const Text(
+              'Lista de Tarefas',
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
 
+            const SizedBox(height: 16),
 
-              SizedBox(
-                height: 16,
-              ),
-
-
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: todoController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Adicione uma tarefa',
-                        hintText: 'Ex: Estudar Flutter',
-                      ),
+            // Campo de entrada e botão para adicionar tarefas.
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: todoController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Adicione uma tarefa',
+                      hintText: 'Ex: Estudar Flutter',
                     ),
                   ),
-                  SizedBox(
-                    width: 8,
-                  ),
-
-
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightGreen,
-                      iconColor: Colors.white,
-                      fixedSize: Size(80, 50),
-                      padding: EdgeInsets.all(14),
-                    ),
-                    onPressed: () {
-                      String text = todoController.text;
-                      },
-                    child: Icon(Icons.add),
-                  ),
-                ],
-              ),
-
-
-              SizedBox(height: 16),
-
-                ListView(
-                  shrinkWrap: true,
-                  children: [
-
-                    ListTile(
-                      title: Text('Estudar Flutter'),
-                      trailing: Icon(Icons.delete),
-                      leading: Icon(Icons.check_box),
-                      onTap: (){print('estudando Flutter');},
-                    ),
-
-                    ListTile(
-                      title: Text('Estudar Dart'),
-                      trailing: Icon(Icons.delete),
-                      leading: Icon(Icons.check_box),
-                      onTap: (){print('estudando Dart');},
-                    ),
-
-
-                    ListTile(
-                      title: Text('Estudar Python'),
-                      trailing: Icon(Icons.delete),
-                      leading: Icon(Icons.check_box),
-                      onTap: (){print('estudando Python');},
-                    ),
-
-
-
-
-
-                  ],
                 ),
-
-
-              SizedBox(width: 32),
-
-              // ignore: prefer_const_constructors
-              Row(
-                children: [
-                  Expanded(
-                    child: Text('Você possui tarefas pendentes'),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightGreen,
+                    fixedSize: const Size(80, 50),
                   ),
-                  SizedBox(height: 200),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      iconColor: Colors.white,
-                      padding: EdgeInsets.all(14),
-                      fixedSize: Size(80, 50),
-                    ),
-                    onPressed: deleteAllTodo,
-                    child: Icon(
-                      Icons.delete_forever,
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        )
-    );
-  } // Widget build
+                  onPressed: addTodo,
+                  child: const Icon(Icons.add),
+                ),
+              ],
+            ),
 
-} // StatelessWidget
+            const SizedBox(height: 16),
+
+            // Lista de tarefas.
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: todos.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(todos[index]),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () => removeTodoAt(index),
+                    ),
+                    leading: const Icon(Icons.check_box_outline_blank),
+                    onTap: () {
+                      print('Tarefa selecionada: ${todos[index]}');
+                    },
+                  );
+                },
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Mensagem e botão para remover todas as tarefas.
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    todos.isEmpty
+                        ? 'Nenhuma tarefa pendente'
+                        : 'Você possui ${todos.length} tarefas pendentes',
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    fixedSize: const Size(80, 50),
+                  ),
+                  onPressed: deleteAllTodo,
+                  child: const Icon(Icons.delete_forever),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
