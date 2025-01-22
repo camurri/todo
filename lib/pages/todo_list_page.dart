@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// Página de lista de tarefas (Todo List).
@@ -20,21 +21,21 @@ class _TodoListPageState extends State<TodoListPage> {
   /// Adiciona uma nova tarefa à lista de tarefas.
   ///
   /// A tarefa será adicionada apenas se o campo de texto não estiver vazio.
-  void addTodo() {
-    String text = todoController.text;
-    if (text.isNotEmpty) {
+  void addTodo() { // Função para adicionar uma nova tarefa.
+    String text = todoController.text; // passando para text os caracteres digitados
+    if (text.isNotEmpty) { // Verifica se a string está vazia
       setState(() { // Atualiza a interface do usuário.
-        todos.add(text); // Adiciona a tarefa à lista.
-      });
+       todos.add(text); // Adiciona a tarefa à lista.
+      }); // Atualiza a interface do usuário.
       todoController.clear(); // Limpa o campo de texto após a adição.
     }
-  }
+  } //
 
   /// Remove todas as tarefas da lista.
   void deleteAllTodo() {
     setState(() { // Atualiza a interface do usuário.
       todos.clear(); // Remove todas as tarefas da lista.
-    });
+    }); // Atualiza a interface do usuário.
   }
 
   /// Remove a tarefa no índice especificado.
@@ -47,27 +48,27 @@ class _TodoListPageState extends State<TodoListPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {// Constrói a interface do usuário.
     return Scaffold(// Tela principal.
       body: Padding(// Conteúdo da tela.
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32), // Espaçamento interno.
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+          mainAxisSize: MainAxisSize.min, // Permite que o conteúdo ocupe todo o espaço disponível.
+          children: [ // Conteúdo da tela.
             // Título principal da página.
-            const Text(
+            const Text( // Texto principal.
               'Lista de Tarefas',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),// Estilo do texto.
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 16),// Espaçamento entre os elementos.
 
             // Campo de entrada e botão para adicionar tarefas.
-            Row(
-              children: [
+            Row(// Linha para os campos de entrada e botão.
+              children: [// Campos de entrada e botão.
                 Expanded(
-                  child: TextField(
-                    controller: todoController,
+                  child: TextField(// Campo de entrada de texto.
+                    controller: todoController,// Controlador do campo de texto.
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Adicione uma tarefa',
@@ -79,6 +80,8 @@ class _TodoListPageState extends State<TodoListPage> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.lightGreen,
+                    iconColor: Colors.white,
+                    iconSize: 30,
                     fixedSize: const Size(80, 50),
                   ),
                   onPressed: addTodo,
@@ -98,11 +101,11 @@ class _TodoListPageState extends State<TodoListPage> {
                   return ListTile(// Item da lista.
                     title: Text(todos[index]),
                     trailing: IconButton(// Botão para remover a tarefa.
-                      icon: const Icon(Icons.delete),// Ícone do botão.
+                      icon:  Icon(Icons.delete, size: 30,),// Ícone do botão.
                       onPressed: () => removeTodoAt(index),// Ação ao pressionar o botão.
                     ),
-                    leading: const Icon(Icons.check_box_outline_blank),//
-                    onTap: () {// Ação ao clicar no item.
+                    leading: const Icon(Icons.check_box_outline_blank),// Ícone da tarefa.
+                    onTap: () {// Ação ao clicar no item. ############################
                       print('Tarefa selecionada: ${todos[index]}');
                     },// Mensagem de depuração.
                   );
@@ -125,6 +128,8 @@ class _TodoListPageState extends State<TodoListPage> {
                 ElevatedButton(// Botão para remover todas as tarefas.
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
+                    iconColor: Colors.white,
+                    iconSize: 30,
                     fixedSize: const Size(80, 50),
                   ),
                   onPressed: deleteAllTodo,
